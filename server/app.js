@@ -10,10 +10,11 @@ const app = express();
 config ({path:"./config/config.env"})
 
 app.use(cors({
-    origin: [process.env.FRONTEND_URL, process.env.DASHBORD_URL],
-    methods:["GET", "POST", "PUT", "DELETE", "PATCH"],
-   
-}))
+  origin: [process.env.FRONTEND_URL, process.env.DASHBORD_URL],
+  methods: ["GET", "POST", "PUT", "DELETE", "PATCH"],
+  credentials: true, // ✅ REQUIRED FOR COOKIES
+}));
+
 
 app.use(cookieParser())
 app.use(express.json());
