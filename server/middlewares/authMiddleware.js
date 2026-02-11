@@ -4,9 +4,9 @@ import ErrorHandler from "./errorMiddleware.js";
 import database from "../database/db.js";
 
 export const isAuthenticatedUser = catchAsyncError(async (req, res, next) => {
-  const token = req.cookies?.token;   // ✅ must use optional chaining
+  const {token} = req.cookies;   // ✅ must use optional chaining
 
-  console.log("TOKEN FROM COOKIE:", token);  // 🔥 debug
+  //console.log("TOKEN FROM COOKIE:", token);  // 🔥 debug
 
   if (!token) {
     return next(new ErrorHandler("Please login to access this resource", 401));
@@ -15,7 +15,7 @@ export const isAuthenticatedUser = catchAsyncError(async (req, res, next) => {
   const decoded = jwt.verify(token, process.env.JWT_SECRET_KEY);
 
   const user = await database.query(
-    `SELECT id, name, email FROM users WHERE id = $1 LIMIT 1`,
+    `SELECT * FROM users WHERE id = $1 LIMIT 1`,
     [decoded.id]
   );
 
